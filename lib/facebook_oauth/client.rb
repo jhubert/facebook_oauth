@@ -2,10 +2,11 @@ require 'facebook_oauth/objects'
 
 module FacebookOAuth
   class Client
-    
+
     def initialize(options = {})
-      @application_id = options[:application_id]
-      @application_secret = options[:application_secret]
+      defaults_from_config_file
+      @application_id = options[:application_id] || @settings[:app_id]
+      @application_secret = options[:application_secret] || @settings[:secret]
       @callback = options[:callback]
       @token = options[:token]
     end
@@ -53,6 +54,14 @@ module FacebookOAuth
       def _delete(url)
         oauth_response = access_token.delete(url)
         JSON.parse(oauth_response)
+      end
+
+      def defaults_from_config_file
+        path = "#{Rails.root}/config/facebook.yml"
+        @settings = {}
+        if File.exist?(path)
+          @settings = YAML::load(File.open(path))[Rails.env.to_s]
+        end
       end
   end
 end
