@@ -5,8 +5,8 @@ module FacebookOAuth
 
     def initialize(options = {})
       defaults_from_config_file
-      @application_id = options[:application_id] || @settings[:application_id]
-      @application_secret = options[:application_secret] || @settings[:application_secret]
+      @application_id = options[:application_id] || @settings['application_id']
+      @application_secret = options[:application_secret] || @settings['application_secret']
       @callback = options[:callback]
       @token = options[:token]
     end
